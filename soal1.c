@@ -94,9 +94,25 @@ static int xmp_mkdir(const char *path,mode_t mode)
     return 0
 }
 
-static int xmp_write(const char *path, const char *ulti,size_t,off_t,struct fuse_file_info *kata)
+static int xmp_write(const char *path, const char *ulti,size_t size,off_t offset,struct fuse_file_info *kata)
 {
+	int fd;
+    int res;
+     char fpath[1000];
 
+    sprintf(fpath, "%s%s", dirpath, path);
+
+    (void) kata;
+    fd = open(fpath, O_WRONLY);
+    if (fd == -1)
+        return -errno;
+
+    res = pwrite(fd, buf, size, offset);
+    if (res == -1)
+        res = -errno;
+
+    close(fd);
+    return res;
 }
 
 static int xmp_open(const char *path, struct fuse_file_info *ultimate)
