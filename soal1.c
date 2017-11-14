@@ -20,6 +20,11 @@ static int xmp_readdir(const char *path, void *buff, fuse_full_dir_t filler, off
 
 static int xmp_read(const char *path, char *kata, size_t,off_t)
 {
+
+}
+
+static int xmp_mkdir(const char *path,mode_t)
+{
 	
 }
 static struct fuse_operations xmp_oper = {
