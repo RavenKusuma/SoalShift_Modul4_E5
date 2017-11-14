@@ -25,6 +25,11 @@ static int xmp_read(const char *path, char *kata, size_t,off_t)
 
 static int xmp_mkdir(const char *path,mode_t)
 {
+
+}
+
+static int xmp_write(const char *path, const char *ulti,size_t,off_t,struct fuse_file_info *kata)
+{
 	
 }
 static struct fuse_operations xmp_oper = {
