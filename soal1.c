@@ -10,6 +10,11 @@
 
 static int xmp_getattr(const char *path, struct stat *stbuf)
 {
+
+}
+
+static int xmp_readdir(const char *path, void *buff, fuse_full_dir_t filler, off_t offset, struct fuse_file_info *fi)
+{
 	
 }
 static struct fuse_operations xmp_oper = {
