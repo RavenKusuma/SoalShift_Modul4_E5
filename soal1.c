@@ -83,7 +83,15 @@ static int xmp_read(const char *path, char *buf, size_t size,off_t offset,struct
 
 static int xmp_mkdir(const char *path,mode_t mode)
 {
+	int res;
+    char fpath[1000];
 
+    sprintf(fpath, "%s%s", dirpath, path);
+    res = mkdir(fpath, mode);
+    if (res == -1)
+        return -errno;
+
+    return 0
 }
 
 static int xmp_write(const char *path, const char *ulti,size_t,off_t,struct fuse_file_info *kata)
