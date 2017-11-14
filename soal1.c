@@ -21,7 +21,7 @@ static int xmp_getattr(const char *path, struct stat *stbuf)
         return 0;
 }
 
-static int xmp_readdir(const char *path, void *buff, fuse_full_dir_t filler, off_t offset, struct fuse_file_info *fi)
+static int xmp_readdir(const char *path, void *buff, fuse_fill_dir_t filler, off_t offset, struct fuse_file_info *fi)
 {
 	char fpath[1000];
     if(strcmp(path,"/")==0)
@@ -55,8 +55,29 @@ static int xmp_readdir(const char *path, void *buff, fuse_full_dir_t filler, off
     return 0;
 }
 
-static int xmp_read(const char *path, char *kata, size_t,off_t)
+static int xmp_read(const char *path, char *buf, size_t size,off_t offset,struct fuse_file_info *pusing)
 {
+	char fpath[1000];
+	if(strcmp(path,"/") == 0)
+	{
+		path=dirpath;
+		sprintf(fpath,"%s",path);
+	}
+	else sprintf(fpath, "%s%s",dirpath,path);
+	int res = 0;
+  	int fd = 0 ;
+
+	(void) pusing;
+	fd = open(fpath, O_RDWR);
+	if (fd == -1)
+		return -errno;
+
+	res = pread(fd, buf, size, offset);
+	if (res == -1)
+		res = -errno;
+
+	close(fd);
+	return res;
 
 }
 
