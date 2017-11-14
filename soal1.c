@@ -117,7 +117,16 @@ static int xmp_write(const char *path, const char *ulti,size_t size,off_t offset
 
 static int xmp_open(const char *path, struct fuse_file_info *ultimate)
 {
+	int res;
+    char fpath[1000];
 
+    sprintf(fpath, "%s%s", dirpath, path);
+    res = open(fpath, ultimate->flags);
+    if (res == -1)
+        return -errno;
+
+    close(res);
+    return 0;
 }
 
 static struct fuse_operations xmp_oper = {
