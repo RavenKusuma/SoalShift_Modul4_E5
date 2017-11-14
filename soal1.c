@@ -30,8 +30,14 @@ static int xmp_mkdir(const char *path,mode_t)
 
 static int xmp_write(const char *path, const char *ulti,size_t,off_t,struct fuse_file_info *kata)
 {
-	
+
 }
+
+static int xmp_open(const char *path, struct fuse_file_info *ultimate)
+{
+
+}
+
 static struct fuse_operations xmp_oper = {
 	.getattr	= xmp_getattr,
 	.readdir	= xmp_readdir,
