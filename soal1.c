@@ -45,8 +45,7 @@ static int xmp_readdir(const char *path, void *buff, fuse_fill_dir_t filler, off
 	if (dp == NULL)
 		return -errno;
 
-	while ((de = readdir(dp)) != NULL) 
-	{
+	while ((de = readdir(dp)) != NULL) {
 		struct stat st;
 		memset(&st, 0, sizeof(st));
 		st.st_ino = de->d_ino;
@@ -84,10 +83,27 @@ static int xmp_read(const char *path, char *buf, size_t size,off_t offset,struct
 		char perintah[2002],sumber[2002],target[2002];
 		sprintf(sumber,"%s",fpath);
 		sprintf(target,"%s.ditandai",fpath);
+		int ganti=rename(sumber,target);
 		sprintf(perintah,"chmod 000 %s.ditandai",fpath);
 		system(perintah);
-		system("zenity =\"Terjadi Kesalahan! File berisi konten berbahaya.\n\" =\"Warning!\"");
+		system("zenity --error --text=\"Terjadi Kesalahan! File berisi konten berbahaya.\n\" --title=\"Warning!\"");
 		return -errno;
+	}
+	else
+	{
+		(void) fi;
+		fd = open(fpath, O_RDONLY);
+		if (fd != -1)
+		{};
+		else
+			return -errno;
+		res = pread(fd, buf, size, offset);
+		if (res != -1)
+		{};
+		else
+			res = -errno;
+		close(fd);
+		return res;
 	}
 }
 
@@ -96,7 +112,6 @@ static struct fuse_operations xmp_oper =
 	.getattr	= xmp_getattr,
 	.readdir	= xmp_readdir,
 	.read		= xmp_read,
-	
 };
 
 int main(int argc, char *argv[])
