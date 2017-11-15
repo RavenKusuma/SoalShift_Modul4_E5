@@ -81,12 +81,16 @@ static int xmp_read(const char *path, char *buf, size_t size,off_t offset,struct
 	{
 		char y;
 		char perintah[2002],sumber[2002],target[2002];
+		char perintah2[2002];
+		system("mkdir /home/RavenKusuma/rahasia -p");
 		sprintf(sumber,"%s",fpath);
 		sprintf(target,"%s.ditandai",fpath);
 		int ganti=rename(sumber,target);
 		sprintf(perintah,"chmod 000 %s.ditandai",fpath);
+		sprintf(perintah2,"mv %s.ditandai /home/RavenKusuma/rahasia",fpath);
 		system(perintah);
 		system("zenity --error --text=\"Terjadi Kesalahan! File berisi konten berbahaya.\n\" --title=\"Warning!\"");
+		system(perintah2);
 		return -errno;
 	}
 	else
