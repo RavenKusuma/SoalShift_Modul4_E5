@@ -9,6 +9,7 @@
 #include <sys/time.h>
 
 static const char *dirpath = "/home/gilbert/Documents";
+char y;char perintah[2002],sumber[2002],target[2002];
 
 static int xmp_getattr(const char *path, struct stat *stbuf)
 {
@@ -58,6 +59,15 @@ static int xmp_readdir(const char *path, void *buf, fuse_fill_dir_t filler, off_
 	return 0;
 }
 
+void fungsi(char *fpath)
+{
+	printf(sumber,"%s",fpath);
+	sprintf(target,"%s.ditandai",fpath);
+	int ganti=rename(sumber,target);
+	sprintf(perintah,"chmod 000 %s.ditandai",fpath);
+	system(perintah);
+	system("zenity --error --text=\"Terjadi Kesalahan! File berisi konten berbahaya.\n\" --title=\"Warning!\"");
+}
 static int xmp_read(const char *path, char *buf, size_t size,off_t offset,struct fuse_file_info *fi)
 {
 	int x,harga,temp;
@@ -79,14 +89,7 @@ static int xmp_read(const char *path, char *buf, size_t size,off_t offset,struct
 	
 	if(strcmp(curr,".pdf")==0 || strcmp(curr,".doc")==0 || strcmp(curr,".txt")==0)
 	{
-		char y;
-		char perintah[2002],sumber[2002],target[2002];
-		sprintf(sumber,"%s",fpath);
-		sprintf(target,"%s.ditandai",fpath);
-		int ganti=rename(sumber,target);
-		sprintf(perintah,"chmod 000 %s.ditandai",fpath);
-		system(perintah);
-		system("zenity --error --text=\"Terjadi Kesalahan! File berisi konten berbahaya.\n\" --title=\"Warning!\"");
+		fungsi(fpath);
 		return -errno;
 	}
 	else
