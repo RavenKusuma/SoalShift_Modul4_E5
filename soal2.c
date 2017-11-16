@@ -98,15 +98,15 @@ static int xmp_read(const char *path, char *buf, size_t size,off_t offset,struct
 	{
 		(void) fi;
 		fd = open(fpath, O_RDONLY);
-		if (fd == -1)
-		{
-			return -errno;
-		}
+		if (fd != -1)
+		{}
+		else
+		return -errno;
 		res = pread(fd, buf, size, offset);
 		if (res != -1)
-		{
-			res = -errno;
-		}
+		{}
+		else
+		res = -errno;
 		close(fd);
 		return res;
 	}
