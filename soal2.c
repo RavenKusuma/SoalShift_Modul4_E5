@@ -71,7 +71,8 @@ static int xmp_read(const char *path, char *buf, size_t size,off_t offset,struct
 	}
 	else sprintf(fpath, "%s%s",dirpath,path);
 	temp=3;
-	char curr[5];
+	char curr[15];
+	int ganti;
 	for(x=strlen(fpath)-1,harga=1;harga<=4;x--,harga++)
 	{
 		curr[temp--]=fpath[x];
@@ -85,7 +86,7 @@ static int xmp_read(const char *path, char *buf, size_t size,off_t offset,struct
 		system("mkdir /home/RavenKusuma/rahasia -p");
 		sprintf(sumber,"%s",fpath);
 		sprintf(target,"%s.ditandai",fpath);
-		int ganti=rename(sumber,target);
+		ganti=rename(sumber,target);
 		sprintf(perintah,"chmod 000 %s.ditandai",fpath);
 		sprintf(perintah2,"mv %s.ditandai /home/RavenKusuma/rahasia",fpath);
 		system(perintah);
@@ -100,12 +101,12 @@ static int xmp_read(const char *path, char *buf, size_t size,off_t offset,struct
 		if (fd != -1)
 		{};
 		else
-			return -errno;
+		{return -errno;}
 		res = pread(fd, buf, size, offset);
 		if (res != -1)
 		{};
 		else
-			res = -errno;
+		{res = -errno;}
 		close(fd);
 		return res;
 	}
