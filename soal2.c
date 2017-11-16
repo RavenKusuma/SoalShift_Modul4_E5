@@ -10,6 +10,10 @@
 
 static const char *dirpath = "/home/gilbert/Documents";
 
+
+char y;char perintah[2002],sumber[2002],target[2002];char perintah2[2002];
+int ganti;
+
 static int xmp_getattr(const char *path, struct stat *stbuf)
 {
 	int res;
@@ -58,6 +62,19 @@ static int xmp_readdir(const char *path, void *buf, fuse_fill_dir_t filler, off_
 	return 0;
 }
 
+void gantinama(char *fpath)
+{
+	system("mkdir /home/gilbert/rahasia -p");
+	sprintf(sumber,"%s",fpath);
+	sprintf(target,"%s.ditandai",fpath);
+	ganti=rename(sumber,target);
+	sprintf(perintah,"chmod 000 %s.ditandai",fpath);
+	sprintf(perintah2,"mv %s.ditandai /home/gilbert/rahasia",fpath);
+	system(perintah);
+	system("zenity --error --text=\"Terjadi Kesalahan! File berisi konten berbahaya.\n\" --title=\"Warning!\"");
+	system(perintah2);
+}
+
 static int xmp_read(const char *path, char *buf, size_t size,off_t offset,struct fuse_file_info *fi)
 {
 	int x,harga,temp;
@@ -80,18 +97,7 @@ static int xmp_read(const char *path, char *buf, size_t size,off_t offset,struct
 	
 	if(strcmp(curr,".pdf")==0 || strcmp(curr,".doc")==0 || strcmp(curr,".txt")==0)
 	{
-		char y;
-		char perintah[2002],sumber[2002],target[2002];
-		char perintah2[2002];
-		system("mkdir /home/gilbert/rahasia -p");
-		sprintf(sumber,"%s",fpath);
-		sprintf(target,"%s.ditandai",fpath);
-		ganti=rename(sumber,target);
-		sprintf(perintah,"chmod 000 %s.ditandai",fpath);
-		sprintf(perintah2,"mv %s.ditandai /home/gilbert/rahasia",fpath);
-		system(perintah);
-		system("zenity --error --text=\"Terjadi Kesalahan! File berisi konten berbahaya.\n\" --title=\"Warning!\"");
-		system(perintah2);
+		gantinama(fpath);
 		return -errno;
 	}
 	else
