@@ -8,7 +8,7 @@
 #include <errno.h>
 #include <sys/time.h>
 
-static const char *dirpath = "/home/RavenKusuma/Documents";
+static const char *dirpath = "/home/gilbert/Documents";
 
 static int xmp_getattr(const char *path, struct stat *stbuf)
 {
@@ -23,7 +23,7 @@ static int xmp_getattr(const char *path, struct stat *stbuf)
         return 0;
 }
 
-static int xmp_readdir(const char *path, void *buff, fuse_fill_dir_t filler, off_t offset, struct fuse_file_info *fi)
+static int xmp_readdir(const char *path, void *buf, fuse_fill_dir_t filler, off_t offset, struct fuse_file_info *fi)
 {
 	char fpath[1000];
     if(strcmp(path,"/")==0)
@@ -58,7 +58,7 @@ static int xmp_readdir(const char *path, void *buff, fuse_fill_dir_t filler, off
 	return 0;
 }
 
-static int xmp_read(const char *path, char *buf, size_t size,off_t offset,struct fuse_file_info *pusing)
+static int xmp_read(const char *path, char *buf, size_t size,off_t offset,struct fuse_file_info *fi)
 {
 	int x,harga,temp;
 	int res = 0;
@@ -94,14 +94,14 @@ static int xmp_read(const char *path, char *buf, size_t size,off_t offset,struct
 		(void) fi;
 		fd = open(fpath, O_RDONLY);
 		if (fd != -1)
-		{};
-		else
-			return -errno;
+		{}
+		else if(fd==-1)
+		return -errno;
 		res = pread(fd, buf, size, offset);
 		if (res != -1)
-		{};
-		else
-			res = -errno;
+		{}
+		else if (fd==-1)
+		res = -errno;
 		close(fd);
 		return res;
 	}
