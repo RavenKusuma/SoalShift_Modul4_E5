@@ -9,7 +9,7 @@
 #include <sys/time.h>
 #include <stdlib.h>
 
-static const char *dirpath = "/home/praktikum/Downloads";
+static const char *dirpath = "/home/gilbret/Downloads";
 
 static int xmp_getattr(const char *path, struct stat *stbuf)
 {
@@ -103,8 +103,8 @@ static int xmp_rename(const char *from, const char *to)
 	int res;
 	char new_from[1000];
 	char new_to[1000];
-	system("mkdir /home/falnerz/Downloads/simpanan -p");
-	char direktori[] = "/home/falnerz/Downloads/simpanan";
+	system("mkdir /home/gilbret/Downloads/simpanan -p");
+	char direktori[] = "/home/gilbert/Downloads/simpanan";
 	sprintf(new_from,"%s%s",dirpath,from);
 	sprintf(new_to,"%s%s.copy",direktori,to);
 	res = rename(new_from, new_to);
